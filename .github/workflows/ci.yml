@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  library:
+    name: Library (build + unit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install
+        run: npm ci --ignore-scripts
+      - name: Approve esbuild install scripts
+        run: npm rebuild esbuild
+      - name: Typecheck
+        run: npm run typecheck -w vercel-armor
+      - name: Unit tests
+        run: npm test -w vercel-armor
+      - name: Build library
+        run: npm run build -w vercel-armor
+
+  web-e2e:
+    name: Web (Playwright E2E)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install
+        run: npm ci --ignore-scripts
+      - name: Approve esbuild install scripts
+        run: npm rebuild esbuild
+      - name: Build library
+        run: npm run build -w vercel-armor
+      - name: Build web
+        run: npm run build -w web
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - name: E2E
+        run: npm run test:e2e -w web
+        env:
+          CI: 'true'
+      - name: Upload traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: apps/web/test-results

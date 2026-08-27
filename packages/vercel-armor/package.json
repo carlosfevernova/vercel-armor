@@ -1,7 +1,7 @@
 {
   "name": "vercel-armor",
-  "version": "0.1.0",
-  "description": "4-layer armor for Vercel serverless APIs that depend on flaky external services. Circuit breaker + abortable fetch + throttled map + stale-if-error cache headers. Zero runtime deps.",
+  "version": "0.2.0",
+  "description": "Resilience toolkit for Vercel serverless APIs — three-state circuit breaker (closed/open/half-open), retry with backoff + Retry-After, one-line Next.js App Router wrapper, observability events. Zero runtime deps.",
   "keywords": [
     "vercel",
     "serverless",
@@ -40,10 +40,12 @@
     "build": "tsup",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build && npm test"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "2.1.5",
     "tsup": "8.3.5",
     "typescript": "5.6.3",
     "vitest": "2.1.5"
