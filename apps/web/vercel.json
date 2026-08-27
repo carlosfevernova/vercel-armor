@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "buildCommand": "cd ../.. && npm run build -w vercel-armor && npm run build -w web",
-  "installCommand": "cd ../.. && npm install --no-audit --no-fund",
+  "installCommand": "cd ../.. && npm install --no-audit --no-fund --ignore-scripts",
+  "buildCommand": "cd ../.. && npm rebuild esbuild && npm run build -w vercel-armor && npm run build -w web",
   "outputDirectory": ".next"
 }
