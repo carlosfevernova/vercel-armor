@@ -1,0 +1,59 @@
+{
+  "name": "vercel-armor",
+  "version": "0.1.0",
+  "description": "4-layer armor for Vercel serverless APIs that depend on flaky external services. Circuit breaker + abortable fetch + throttled map + stale-if-error cache headers. Zero runtime deps.",
+  "keywords": [
+    "vercel",
+    "serverless",
+    "circuit-breaker",
+    "request-collapsing",
+    "stale-if-error",
+    "abortcontroller",
+    "resilience",
+    "backoff",
+    "nextjs",
+    "edge"
+  ],
+  "author": "Carlos F. Vernova",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "devDependencies": {
+    "tsup": "8.3.5",
+    "typescript": "5.6.3",
+    "vitest": "2.1.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlosfevernova/vercel-armor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/carlosfevernova/vercel-armor/issues"
+  },
+  "homepage": "https://vercel-armor.vercel.app"
+}
