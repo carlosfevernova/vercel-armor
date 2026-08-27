@@ -1,19 +1,36 @@
 version: 2
 updates:
+  # npm — monthly grouped bumps, max 2 open PRs. Reduces noise on a young repo.
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    open-pull-requests-limit: 2
     groups:
-      types:
+      all-npm:
         patterns:
-          - "@types/*"
-      vitest:
-        patterns:
-          - "vitest"
-          - "@vitest/*"
-    open-pull-requests-limit: 5
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Skip major bumps by default — breaking changes should be evaluated manually.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions — same story, monthly grouped, max 1 open PR.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 1
+    groups:
+      actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
